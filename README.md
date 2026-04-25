@@ -140,12 +140,7 @@ By turning complex satellite imagery into a simple **"Risk Score,"** we empower 
 ---
 
 ### 👥 Team Contributions
-Oscar Podkowa - Leadership, coordination, project menagement, business perspective
-Aleksei Pankov - Lead technical sector, code for the cervice 
-Iva Jefremova - User interface design, interactivity, project report 
+* **Iva Jefremova:** UI/UX Design Lead, Presentation Logic, & Frontend Integration.
+* **Aleksei Pankov:** Satellite Data Processing & Backend Architecture.
+* **Oskar Podkowa:** Leadership and Team Coordination, Economic Research & Business Logic Development.
 #### The team displays collective contribution to the code and the presentation
-
-
-* **[Name]:** UI/UX Design Lead, Presentation Logic, & Frontend Integration.
-* **[Name]:** Satellite Data Processing & Backend Architecture.
-* **[Name]:** Economic Research & Business Logic Development.
