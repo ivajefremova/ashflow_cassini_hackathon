@@ -16,8 +16,8 @@ runoff from the burn scar to the reservoir.
 ## 2. The Problem Landscape
 
 ### 2.1 The "Black Water" Phenomenon
-Wildfires create a chemically complex layer of ash containing concentrated nitrates, phosphates, and heavy metals (e.g., Lead, Arsenic). When the first significant rain event occurs post-fire, this material is mobilized.
-
+Wildfires create a chemically complex layer of ash containing concentrated nitrates, phosphates, and heavy metals. When the first significant rain event occurs post-fire, this material is mobilized.
+Water contamination is a tertiary consequence — fire burns structures → pressure drop in pipes → benzene leaches in → water system is unusable for months → property becomes uninhabitable → insurance claim. This entire chain is currently unmodeled. What is modeled well is fire detection and water contamination detection. 
 * **The Erosion Factor:** Fires destroy the vegetation that stabilizes soil, leading to massive sediment transport.
 * **The Hydrological Link:** Rain carries this sediment into streams and eventually into large-scale water reservoirs.
 
