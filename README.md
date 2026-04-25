@@ -1,4 +1,4 @@
-﻿# Technical Report: Satellite-Based Intelligence for Post-Fire Water Contamination
+﻿# ASHFLOW Technical Report: Satellite-Based Intelligence for Post-Fire Water Contamination
 
 **Project Title:** ASHFLOW
 **Category:** Tracking and preventing water pollution   
