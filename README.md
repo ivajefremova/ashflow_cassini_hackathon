@@ -44,10 +44,6 @@ Our solution relies on the synergy between Copernicus assets to create a holisti
 ## 4. Technical Architecture
 
 ### 4.1 The Contamination Risk API
-The core of our project is a RESTful API that processes spatial data and returns a **Contamination Probability Index (CPI)**.
-
-$$CPI = (B \times 0.45) + (S \times 0.25) + (P \times 0.30)$$
-
 * **Burnt Content ($B$ - 45%):** High-severity burns produce more mobile ash.
 * **Topographic Slope ($S$ - 25%):** Steeper terrain accelerates runoff.
 * **Proximity & Connectivity ($P$ - 30%):** Calculated using distance to reservoirs and river network connectivity.
@@ -98,8 +94,6 @@ The program follows a structured processing flow:
   },
   "forecast_months": 6
 }
-```
-[cite_start][cite: 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37]
 
 ---
 
