@@ -6,10 +6,12 @@
 
 ---
 
+
+
 ## 1. Executive Summary
-This report details a high-fidelity API and monitoring system designed to mitigate the secondary environmental impacts of wildfires. While fire damage is often measured in hectares burned, the subsequent contamination 
-of water reservoirs via ash runoff represents a multi-billion euro threat to the European agricultural and insurance sectors. By integrating **Copernicus Sentinel** data, we provide a predictive risk-modeling tool that tracks toxic
-runoff from the burn scar to the reservoir.
+This report details a high-fidelity API and monitoring system designed to mitigate the tetriary environmental impacts of wildfires. While fire damage is often measured in hectares burned, the subsequent contamination of water reservoirs via ash runoff represents a multi-billion euro threat to the European insurance sectors. By integrating **Copernicus Sentinel** data, we provide a predictive risk-modeling tool that tracks toxicrunoff from the burn scar to the reservoir. 
+# Currently there doesn't exist any stakeholder for this specific detection, because systems usually focus on fire tracking and general water pollution, but not the bridge betweeen the two.
+
 
 ---
 
@@ -21,8 +23,8 @@ Water contamination is a tertiary consequence — fire burns structures → pres
 * **The Erosion Factor:** Fires destroy the vegetation that stabilizes soil, leading to massive sediment transport.
 * **The Hydrological Link:** Rain carries this sediment into streams and eventually into large-scale water reservoirs.
 
-### 2.2 Economic Impact & Stakeholder Analysis
-We have identified two primary sectors suffering from a **"data gap"** in post-fire recovery:
+### 2.2 Business Model Analysis
+We have identified two primary sectors suffering in post-fire recovery: **Reinsurance Companies that deal with catastrophies, Governmental bodies which are the first target after a catastrophy and Environmental Consulting Firms that already have tracking systems but would aid in a specific fire-ash-water niche**. There is also a new law implemented all around the world, recently implemented in Italy as - CATNAT **Police CATASTROFALI**, that states that every institution with headquarters has to have catastrophy specific insurance. This increases the demand for insurance -> which increases the demand for risk evaluation and detection systems.
 
 #### **A. Agricultural Businesses**
 * **Equipment Damage:** Ash and fine sediment clog advanced irrigation filters and pumps, leading to mechanical failure.
@@ -78,10 +80,95 @@ The program follows a structured processing flow:
 3.  **Watershed Analysis:** Utilizing libraries like **PySheds** to delineate the drainage basin of the target reservoir.
 4.  **API Payload:** Results are serialized into JSON for the frontend.
 
-#### Technical Report: Post-Fire Downstream Contaminant Risk Pipeline
+[cite_start]ASHFLOW is a specialized risk engine designed to provide differentiated contamination forecasts for water bodies following wildfire events[cite: 2, 7]. [cite_start]This demo build focuses on the **Corinthia wildfire** in Greece (ignited 29 September 2024), which burned approximately 8,195 ha[cite: 4, 5].
 
-This report details a specialized analytical framework designed to quantify water quality risks following wildfire events. By integrating Earth Observation (EO) data with land-use classifications and hydrological modeling, the pipeline identifies specific chemical threats to European water reservoirs.
+---
 
+### API Endpoint
+[cite_start]The demo utilizes a single **FastAPI** endpoint to generate forecasts along with the open source Satellite database through the library **Openeo** in Python[cite: 17, 135].
+
+[cite_start]**`POST /api/contamination-forecast`** [cite: 20]
+
+**Request Body Example:**
+```json
+{
+  "location": {
+    "name": "Lake Stymfalia",
+    "lon": 22.456,
+    "lat": 37.852
+  },
+  "fire_event": {
+    "ignition_date": "2024-09-29",
+    "burned_area_bbox": {
+      "west": 22.20, "east": 22.65,
+      "south": 37.80, "north": 38.05
+    }
+  },
+  "forecast_months": 6
+}
+```
+[cite_start][cite: 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37]
+
+---
+
+## Calculation Methodology
+[cite_start]The engine estimates monthly contaminant loads ($kg$) based on burned upstream areas and land use categories[cite: 80, 81, 82].
+
+### Step 1: Upstream Analysis
+[cite_start]Identify burned polygons within a **15km radius** that are at a higher elevation than the target lake[cite: 84].
+
+### Step 2: Emission Factors
+[cite_start]Base emission factors (kg of contaminant per hectare) vary by land use[cite: 87, 88]:
+
+| Category | PAHs (kg/ha) | DOC (kg/ha) | Phosphorus (kg/ha) | Nitrates (kg/ha) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Forest / Shrubland** | 0.04 – 0.06 | 0.25 – 0.35 | 0.018 – 0.025 | 0.06 – 0.08 |
+| **Agricultural Land** | 0.01 – 0.02 | 0.10 – 0.18 | 0.035 – 0.055 | 0.12 – 0.18 |
+| **Industrial / Mining**| 0.02 – 0.04 | 0.08 – 0.14 | — | — |
+[cite_start][cite: 89]
+
+### Step 3: Decay Function
+[cite_start]Contamination follows a negative exponential decay curve after the first rain event[cite: 97, 98]:
+[cite_start]$$load\_month\_m = base\_load \times severity\_multiplier \times decay(m)$$ [cite: 99]
+
+* [cite_start]**Organic (PAHs, DOC):** $exp(-0.35 \times (m - 1))$ [cite: 100]
+* [cite_start]**Nutrients (Phosphorus, Nitrates):** $exp(-0.20 \times (m - 1))$ [cite: 101]
+* [cite_start]**Heavy Metals:** $exp(-0.10 \times (m - 1))$ [cite: 102]
+
+---
+
+## Development Checklist
+[cite_start]To prepare the demo, the following delta work is required[cite: 116]:
+
+Run this ONCE before starting the API:
+    **python sentinel_pipeline.py**
+
+It will:
+  1. Connect to Copernicus Data Space (browser login on first run)
+  2. Download pre-fire and post-fire Sentinel-2 composites
+  3. Compute dNBR and save to output/dnbr_corinthia.tif
+  4. Classify severity and save to output/severity_corinthia.tif
+  5. Extract burned area stats per lake catchment
+  6. Save output/lake_upstream_stats.json  ← the API reads this file
+
+After this script finishes, start the API normally:
+    **uvicorn api:app --reload --port 8000**
+
+---
+
+## File Structure
+```text
+aquafire/
+├── config.py                 # AOI + date configuration
+├── sentinel_pipeline.py                   # Core pipeline execution
+├── api.py                    # FastAPI endpoint
+├── requirements.txt          # Dependencies (fastapi, uvicorn)
+├── engine/
+│   ├── forecast.py           # Monthly load model logic
+│ 
+└── output/                   # Pre-generated geospatial data from sentinel_pipeline with openeo
+```
+[cite_start][cite: 176, 177, 178, 179, 180, 181, 187, 188]
 ---
 
 ##### Burn Severity and Perimeter Mapping
@@ -128,19 +215,16 @@ The final output is a localized risk score delivered via a map interface. Each d
 2.  **Timing estimates** for arrival.
 3.  **Specific chemical threats** based on the upstream burn profile.
 
-### 5.2 Processing Details
-> [Insert deep dive into your specific Python/C++/Java functions, database schema in Supabase, or frontend logic here.]
-
 ---
 
 ## 6. Conclusion & Future Roadmap
-By turning complex satellite imagery into a simple **"Risk Score,"** we empower businesses to move from a reactive to a proactive stance. 
+By turning complex satellite imagery into a simple **"Risk Score,"** we empower Rensurance Businesses, Governmental Bodies and Environmental Consulting Firms to move from a reactive to a proactive stance in a specific underdeveloped niche, that currently holds no stakeholder. 
 
 
 ---
 
 ### 👥 Team Contributions
-* **Iva Jefremova:** UI/UX Design Lead, Presentation Logic, & Frontend Integration.
-* **Aleksei Pankov:** Satellite Data Processing & Backend Architecture.
-* **Oskar Podkowa:** Leadership and Team Coordination, Economic Research & Business Logic Development.
+* **Iva Jefremova:** 
+* **Aleksei Pankov:** 
+* **Oskar Podkowa:** 
 #### The team displays collective contribution to the code and the presentation
