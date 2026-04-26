@@ -299,7 +299,6 @@ def extract_lake_stats(dnbr_path: str) -> dict:
         json.dump(lake_stats, f, indent=2)
 
     print(f"\nSaved: {stats_path}")
-    print("The API will now use real Sentinel-2 data.")
     return lake_stats
 
 def _dnbr_to_severity_int(mean_dnbr: float) -> int:
