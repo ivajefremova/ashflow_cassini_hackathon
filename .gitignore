@@ -1,2 +1,7 @@
-# created by virtualenv automatically
 *
+.venv/
+__pycache__/
+*.pyc
+.idea/
+output/dnbr_corinthia.tif
+output/*.tmp

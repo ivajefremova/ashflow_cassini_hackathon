@@ -1,0 +1,76 @@
+{
+  "stymfalia": {
+    "name": "Lake Stymfalia",
+    "lon": 22.456,
+    "lat": 37.852,
+    "elevation_m": 626,
+    "type": "natural_wetland",
+    "protected": "Natura 2000",
+    "primary_use": "Ecological / limited irrigation",
+    "catchment_total_ha": 28173.4,
+    "catchment_burned_ha": 3182.9,
+    "burned_fraction": 0.113,
+    "mean_dnbr": 0.1492,
+    "mean_severity_class": 1,
+    "severity_breakdown_ha": {
+      "low": 3014.4,
+      "moderate_low": 159.1,
+      "moderate_high": 7.5,
+      "high": 2.0
+    },
+    "upstream_burned": {
+      "forest_shrub": {
+        "ha": 2482.7,
+        "mean_severity": 1
+      },
+      "agricultural": {
+        "ha": 572.9,
+        "mean_severity": 1
+      },
+      "urban_fringe": {
+        "ha": 127.3,
+        "mean_severity": 1
+      }
+    },
+    "data_source": "sentinel2_live",
+    "dnbr_file": "./output\\dnbr_corinthia.tif",
+    "ignition_date": "2024-09-29"
+  },
+  "doxa": {
+    "name": "Lake Doxa",
+    "lon": 22.28,
+    "lat": 37.94,
+    "elevation_m": 900,
+    "type": "artificial_reservoir",
+    "protected": null,
+    "primary_use": "Irrigation and water supply",
+    "catchment_total_ha": 25390.0,
+    "catchment_burned_ha": 2933.7,
+    "burned_fraction": 0.116,
+    "mean_dnbr": 0.1746,
+    "mean_severity_class": 1,
+    "severity_breakdown_ha": {
+      "low": 2743.4,
+      "moderate_low": 148.2,
+      "moderate_high": 26.2,
+      "high": 15.8
+    },
+    "upstream_burned": {
+      "forest_shrub": {
+        "ha": 1584.2,
+        "mean_severity": 1
+      },
+      "agricultural": {
+        "ha": 1173.5,
+        "mean_severity": 1
+      },
+      "urban_fringe": {
+        "ha": 176.0,
+        "mean_severity": 1
+      }
+    },
+    "data_source": "sentinel2_live",
+    "dnbr_file": "./output\\dnbr_corinthia.tif",
+    "ignition_date": "2024-09-29"
+  }
+}
